@@ -1,0 +1,71 @@
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
+{ config, lib, pkgs, ... }:
+
+{
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Allow stupid, buut good soft
+  nixpkgs.config.allowUnfree = true;
+  
+  # Network
+  networking = {
+    hostName = "hostname";
+    networkmanager.enable = true;
+  };
+  # Time & locale
+  time.timeZone = "Europe/Moscow";
+  i18n.defaultLocale = "en_US.UTF-8";
+  
+  # User 
+  users.users.user = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "networkmanager"];
+    initialPassword = "this need replace to hash-psk";
+    packages = with pkgs; [
+      tree
+    ];
+  };
+
+  # IDK allow chromium
+  programs.chromium.enable = true;
+  
+  # Packages
+  environment.systemPackages = with pkgs; [
+    vim git chromium
+    wget
+    bspwm sxhkd lxappearance 
+    alacritty  
+    ly
+    nemo
+    rofi
+    eww pamixer nitrogen pulseaudio
+    telegram-desktop vscodium obsidian nemo-with-extensions
+];
+  # xserver
+  services.xserver = {
+    enable = true;
+    
+      displayManager = {
+      lightdm.enable = true;
+    			};
+      xkb.layout = "us, ru";
+      xkb.options = "grp:ctrl_alt_toggle";	
+        # [bspwm]
+      windowManager.bspwm.enable = true;
+   };
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+  services.pipewire.pulse.enable = true;  
+  system.stateVersion = "25.05";
+
+}
+
