@@ -1,0 +1,11 @@
+
+#Terminal
+super + Return
+	alacritty
+#rofi
+super + f
+	~/.config/rofi/launchers/type-7/launcher.sh
+
+#close program
+super + w
+	bspc node -c

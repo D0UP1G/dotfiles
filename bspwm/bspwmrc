@@ -1,0 +1,5 @@
+lxappearance &
+
+sleep 10 && nitrogen --restore && xrandr --output eDP-1 --auto &
+
+eww open bar_1 &
